@@ -138,7 +138,8 @@ const Article = () => {
     fetchArticleList()
   }, [params])
   const onSearch = values => {
-    const { status, channel_id, date } = values
+    try {
+       const { status, channel_id, date } = values
     const _params = {}
     if (status) {
        _params.status = status
@@ -157,6 +158,8 @@ const Article = () => {
     })
     console.log(4.5)
     console.log(values)
+    }catch{console.log('onSearch is wrong')}
+   
   }
 
   const pageChange = page => {
