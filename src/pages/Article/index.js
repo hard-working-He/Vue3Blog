@@ -4,7 +4,7 @@ import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select } from 'antd'
 //import locale from 'antd/es/date-picker/locale/zh_CN'
 import './index.scss'
 import { http } from '../../utils'
-import { Table, Tag, Space } from 'antd'
+import { Table, Tag, Space,Popconfirm} from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useEffect } from 'react'
 import { useState } from 'react'
@@ -14,6 +14,13 @@ const { Option } = Select
 const { RangePicker } = DatePicker
 
 const Article = () => {
+  const delArticle = async (data) => {
+    await http.delete(`/mp/articles/${data.id}`)
+    setParams({
+      page: 1,
+      per_page:5
+    })
+  }
   const columns = [
     {
       title: '封面',
@@ -55,12 +62,20 @@ const Article = () => {
         return (
           <Space size="middle">
             <Button type="primary" shape="circle" icon={<EditOutlined />} />
-            <Button
+            <Popconfirm
+              title="确认删除该条文章吗?"
+              onConfirm={() => delArticle(data)}
+              okText="确认"
+              cancelText="取消"
+            >
+              <Button
               type="primary"
               danger
               shape="circle"
               icon={<DeleteOutlined />}
             />
+            </Popconfirm>
+            
           </Space>
         )
       }
@@ -125,7 +140,10 @@ const Article = () => {
   const onSearch = values => {
     const { status, channel_id, date } = values
     const _params = {}
-    _params.status = status
+    if (status) {
+       _params.status = status
+     }
+    
     if (channel_id) {
       _params.channel_id = channel_id
     }
@@ -161,7 +179,7 @@ const Article = () => {
         }
         style={{ marginBottom: 20 }}
       >
-        <Form initialValues={{ status: null }}
+        <Form initialValues={{ status: 1 }}
           onFinish={onSearch} >
           
         <Form.Item label="频道" name="channel_id" >
