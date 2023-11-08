@@ -9,6 +9,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useEffect } from 'react'
 import { useState } from 'react'
 
+
 const { Option } = Select
 const { RangePicker } = DatePicker
 
@@ -120,7 +121,33 @@ const Article = () => {
       })
     }
     fetchArticleList()
-  },[params])
+  }, [params])
+  const onSearch = values => {
+    const { status, channel_id, date } = values
+    const _params = {}
+    _params.status = status
+    if (channel_id) {
+      _params.channel_id = channel_id
+    }
+    /* if (date) {
+      _params.begin_pubdate = date[0].format('YYYY-MM-DD')
+      _params.end_pubdate = data[1].format('YYYY-MM-DD')
+    } */
+    setParams({
+      ...params,
+      ..._params
+    })
+    console.log(4.5)
+    console.log(values)
+  }
+
+  const pageChange = page => {
+    setParams({
+     
+      page,
+      per_page:5
+    })
+  }
   return (
     <div>
       <Card
@@ -134,22 +161,56 @@ const Article = () => {
         }
         style={{ marginBottom: 20 }}
       >
-        <Form initialValues={{ status: null }}>
+        <Form initialValues={{ status: null }}
+          onFinish={onSearch} >
+          
         <Form.Item label="频道" name="channel_id" >
           <Select placeholder="请选择文章频道" style={{ width: 200 }} >
           {channels.map(item => (
             <Option key={item.id} value={item.id}>
             {item.name}
             </Option>
-      ))}
+          ))}
           </Select>
-</Form.Item>
+          </Form.Item>
+          
+           <Form.Item label="状态" name="status">
+            <Radio.Group>
+              <Radio value={null}>全部</Radio>
+              <Radio value={0}>草稿</Radio>
+              <Radio value={1}>待审核</Radio>
+              <Radio value={2}>审核通过</Radio>
+              <Radio value={3}>审核失败</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+           <Form.Item label="日期" name="date">
+            {/* 传入locale属性 控制中文显示*/}
+            <RangePicker></RangePicker>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{ marginLeft: 80 }}>
+              筛选
+            </Button>
+          </Form.Item>
+
         </Form>
       </Card>
       
       <Card title={`根据筛选条件共查询到 ${article.count} 条结果：`}>
-        <Table columns={columns} dataSource={article.list} />
+        <Table
+      dataSource={article.list}
+      columns={columns}
+      pagination={{
+        position: ['bottomCenter'],
+        current: params.page,
+        pageSize: 5,
+        onChange: pageChange
+      }}
+    />
       </Card>
+      
     </div>
   )
 }
