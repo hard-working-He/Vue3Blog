@@ -7,13 +7,14 @@ import {
 import './App.css';
 import Home from './pages/Home'
 import Publish from './pages/Publish'
-
+import { HistoryRouter } from './utils/history';
+import { history } from './utils/history';
 import Article from './pages/Article'
 
 function App() {
   return (
-  
-      <BrowserRouter>
+    <HistoryRouter history={history}>
+      
       <div>
         <Routes>
           <Route path='/' element={
@@ -30,7 +31,11 @@ function App() {
         <Route path='/login' element={<Login/>} />
       </Routes>  
       </div>
-      </BrowserRouter>
+      
+      
+
+    </HistoryRouter>
+    
   
   );
 }
