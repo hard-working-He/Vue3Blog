@@ -8,6 +8,7 @@ import { Table, Tag, Space,Popconfirm} from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { history } from '../../utils'
 
 
 const { Option } = Select
@@ -61,7 +62,7 @@ const Article = () => {
       render: data => {
         return (
           <Space size="middle">
-            <Button type="primary" shape="circle" icon={<EditOutlined />} />
+            <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={()=>history.push(`/home/publish?id=${data.id}`)} />
             <Popconfirm
               title="确认删除该条文章吗?"
               onConfirm={() => delArticle(data)}
