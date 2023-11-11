@@ -16,6 +16,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { useState,useEffect} from 'react'
 import { http } from '../../utils'
+import { useRef } from 'react'
 
 const { Option } = Select
 
@@ -31,24 +32,40 @@ const Publish = () => {
       fetchChannels()
     },[])
   const [fileList, setFileList] = useState([])
-  const onUploadChange = info => {
-    const fileList = info.fileList.map(file => {
+
+  const fileListRef=useRef([])
+  const onUploadChange = ({ fileList }) => {
+    console.log(fileList)
+      setFileList(fileList)
+     fileListRef.current = fileList
+    
+    /* const fileList = info.fileList.map(file => {
       if (file.response) { return { url: file.response.data.url } }
       return file
-    })
-    setFileList(fileList)
+    }) */
+   
 
   }
   
 
   const [imgCount, setImgCount] = useState(1)
-  
+  const [maxCount,setMaxCount]=useState(1)
   const changeType = e => {
     const count = e.target.value
     setImgCount(count)
     console.log(count)
-  }
-   const maxCount=imgCount
+    setMaxCount(count)
+
+    if (count === 1) {
+      const firstImg = fileListRef.current[0]
+      setFileList(firstImg ? [firstImg] : [])
+    }
+    else if (count === 3) {
+      setFileList(fileListRef.current)
+      }
+    }
+  
+
 
 
   return (
