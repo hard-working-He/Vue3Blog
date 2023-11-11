@@ -10,13 +10,14 @@ import {
   Select
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import './index.scss'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { useState,useEffect} from 'react'
 import { http } from '../../utils'
 import { useRef } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 const { Option } = Select
 
@@ -65,7 +66,29 @@ const Publish = () => {
       }
     }
   
+  const onFinish = async (values) => {
+    console.log(values)
+    const { channel_id, content, title, type } = values
+    const params = {
+      channel_id,
+      content,
+      cover: {
+        type: 1,
+        images:fileList.map(item=>item.response.data.url)
+      },
+      type,
+      title
+    }
+    await http.post('/mp/articles?draft=false', params)
+    Navigate('/')
+    
+    
+    
+  }
 
+   const [params] = useSearchParams()
+  const articleId = params.get('id')
+ 
 
 
   return (
@@ -76,14 +99,15 @@ const Publish = () => {
             <Breadcrumb.Item>
               <Link to="/home">首页</Link>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>发布文章</Breadcrumb.Item>
+            <Breadcrumb.Item>{ articleId? '修改文章' :'发布文章'}</Breadcrumb.Item>
           </Breadcrumb>
         }
       >
         <Form
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ content:'' }}
+          initialValues={{ content: 'fdfdf' }}
+          onFinish={onFinish}
         >
           <Form.Item
             label="标题"
@@ -153,7 +177,7 @@ const Publish = () => {
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Space>
               <Button size="large" type="primary" htmlType="submit">
-                发布文章
+                { articleId? '修改文章' :'发布文章'}
               </Button>
             </Space>
           </Form.Item>
