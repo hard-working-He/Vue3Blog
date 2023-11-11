@@ -80,7 +80,7 @@ const Publish = () => {
       title
     }
     await http.post('/mp/articles?draft=false', params)
-    Navigate('/')
+   
     
     
     
@@ -88,7 +88,24 @@ const Publish = () => {
 
    const [params] = useSearchParams()
   const articleId = params.get('id')
- 
+
+  const form=useRef(null)
+  useEffect(() => {
+    async function getArticle () {
+      const res = await http.get(`/mp/articles/${articleId}`)
+      console.log(res)
+      const { cover, ...formValue } = res.data.data
+      console.log(formValue)
+      console.log(form.current)
+      form.current.setFieldsValue({...formValue, type:cover.type})
+      
+    }
+    if (articleId) {
+      getArticle()
+     
+    }
+    
+    },[articleId])
 
 
   return (
@@ -108,6 +125,7 @@ const Publish = () => {
           wrapperCol={{ span: 16 }}
           initialValues={{ content: 'fdfdf' }}
           onFinish={onFinish}
+          ref={form}
         >
           <Form.Item
             label="标题"
