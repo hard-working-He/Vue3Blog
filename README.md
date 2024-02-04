@@ -1,11 +1,12 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
+###技术介绍
+前端： "vue" + "vuex" + "vue-router" + "axios" + "vuetify" + "element" + "echarts"
+###项目特点
+前台参考"Hexo"的"Butterfly"设计，美观简洁，响应式体验好
+后台参考"element-admin"设计，侧边栏，历史标签，面包屑自动生成。
+采用Markdown编辑器，写法简单。
+评论支持表情输入回复等，样式参考Valine。
+代码遵循阿里巴巴开发规范，利于开发者学习。
+搜索文章支持高亮分词，响应速度快
 ### `npm start`
 
 Runs the app in the development mode.\
