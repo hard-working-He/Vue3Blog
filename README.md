@@ -1,6 +1,6 @@
-###技术介绍
+### 技术介绍
 前端： "vue" + "vuex" + "vue-router" + "axios" + "vuetify" + "element" + "echarts"
-###项目特点
+### 项目特点
 前台参考"Hexo"的"Butterfly"设计，美观简洁，响应式体验好
 后台参考"element-admin"设计，侧边栏，历史标签，面包屑自动生成。
 采用Markdown编辑器，写法简单。
